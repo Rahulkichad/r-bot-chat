@@ -11,7 +11,7 @@ interface Message {
   content: string;
 }
 
-const WEBHOOK_URL = "https://rahulkhichad.app.n8n.cloud/webhook-test/MyChatBot";
+const WEBHOOK_URL = "https://rahulkhichad.app.n8n.cloud/webhook/MyChatBot";
 
 const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
