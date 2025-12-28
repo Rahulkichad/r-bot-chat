@@ -43,7 +43,6 @@ const Index = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        mode: "no-cors",
         body: JSON.stringify({
           message: content,
           timestamp: new Date().toISOString(),
@@ -51,25 +50,25 @@ const Index = () => {
         }),
       });
 
-      // Since we're using no-cors, we can't read the response
-      // Simulate an assistant response for demo purposes
+      const data = await response.json();
+      
+      // Extract the response content from the webhook response
+      const responseContent = typeof data === "string" 
+        ? data 
+        : data.response || data.message || data.output || data.text || JSON.stringify(data);
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "Message sent to webhook successfully. Your request is being processed.",
+        content: responseContent,
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-      
-      toast({
-        title: "Message sent",
-        description: "Your message was sent to the webhook.",
-      });
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: "Failed to get response. Please try again.",
         variant: "destructive",
       });
     } finally {
